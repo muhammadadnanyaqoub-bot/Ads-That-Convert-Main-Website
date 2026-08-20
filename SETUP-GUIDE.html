@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ATC — Setup & Launch Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--wine:#8A2739;--wine-br:#CE4A66;--champ:#F0C79E;--bg:#0B0709;--card:#160C10;--line:rgba(255,255,255,.1);--tx:#EFE5E8;--mut:#B4A0A5;--dim:#816F75}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--tx);line-height:1.7;
+background-image:radial-gradient(60vw 40vh at 100% 0,rgba(206,74,102,.14),transparent 60%),radial-gradient(50vw 40vh at 0 10%,rgba(72,14,28,.4),transparent 55%)}
+.wrap{max-width:860px;margin:0 auto;padding:56px 24px 90px}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;color:#fff}
+h1{font-size:clamp(32px,5vw,46px);font-weight:800}
+h2{font-size:26px;font-weight:700;margin:46px 0 14px;padding-top:24px;border-top:1px solid var(--line)}
+h3{font-size:18px;margin:24px 0 8px;color:#fff}
+p{color:var(--mut);margin-bottom:12px}
+a{color:var(--champ)}
+.lede{font-size:18px;color:var(--mut);margin:16px 0 8px}
+.badge{display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque';font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--champ);background:rgba(206,74,102,.12);border:1px solid rgba(206,74,102,.3);padding:7px 14px;border-radius:100px}
+.mark{width:40px;height:40px;vertical-align:middle;margin-right:10px}
+ol,ul{margin:0 0 14px 22px;color:var(--mut)}li{margin-bottom:8px}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,.07);padding:2px 7px;border-radius:6px;font-size:13.5px;color:var(--champ)}
+pre{background:#0f0a0d;border:1px solid var(--line);border-radius:14px;padding:18px 20px;overflow:auto;margin:12px 0 16px}
+pre code{background:none;padding:0;color:#e7dfe2;font-size:13px;line-height:1.7}
+.step{background:linear-gradient(180deg,rgba(40,22,28,.5),rgba(20,11,15,.5));border:1px solid var(--line);border-radius:18px;padding:22px 26px;margin:14px 0}
+.step h3{margin-top:0}
+.note{background:rgba(240,199,158,.08);border:1px solid rgba(240,199,158,.28);border-radius:14px;padding:14px 18px;color:var(--mut);font-size:14.5px;margin:14px 0}
+.ok{background:rgba(126,224,168,.08);border:1px solid rgba(126,224,168,.28);border-radius:14px;padding:14px 18px;color:#bfe9cf;font-size:14.5px;margin:14px 0}
+.warn{background:rgba(206,74,102,.1);border:1px solid rgba(206,74,102,.3);border-radius:14px;padding:14px 18px;color:var(--mut);font-size:14.5px;margin:14px 0}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 26px;margin:28px 0}
+.toc a{display:block;color:var(--mut);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.toc a:hover{color:var(--champ)}
+.kv{color:var(--champ);font-family:'JetBrains Mono',monospace;font-size:13px}
+.pill{display:inline-block;font-size:12px;font-family:'Bricolage Grotesque';font-weight:600;padding:3px 10px;border-radius:100px;background:rgba(206,74,102,.15);color:var(--champ);border:1px solid rgba(206,74,102,.3);margin-left:8px}
+b{color:#fff}
+hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+</style></head>
+<body><div class="wrap">
+
+<span class="badge">● Ads That Convert · Launch Guide</span>
+<h1 style="margin-top:18px">Setup &amp; Launch Guide</h1>
+<p class="lede">Everything you asked for — booking, lead tracking, the Meta Pixel, analytics, and going live — explained step by step. No coding needed. You only ever edit <b>one small block</b> of settings.</p>
+
+<div class="ok"><b>Already done for you:</b> your lead database (Supabase) is fully set up and connected. Every form submission is already saving to a secure <code>website_leads</code> table. You just need to paste in your Pixel / Analytics / Calendly IDs to switch those on.</div>
+
+<div class="toc">
+<b style="color:#fff">Contents</b>
+<a href="#one">1 · The one place you edit — the Settings block</a>
+<a href="#deploy">2 · Put the site live (GitHub → Vercel → your domain)</a>
+<a href="#calendly">3 · Calendly booking</a>
+<a href="#pixel">4 · Meta (Facebook) Pixel — how the code goes in</a>
+<a href="#ga4">5 · Google Analytics 4</a>
+<a href="#clarity">6 · Microsoft Clarity (heatmaps)</a>
+<a href="#gtm">7 · Google Tag Manager (optional)</a>
+<a href="#whatsapp">8 · WhatsApp button</a>
+<a href="#leads">9 · Your leads — where they go &amp; email alerts</a>
+<a href="#legal">10 · Privacy / Terms</a>
+<a href="#test">11 · Final test checklist</a>
+</div>
+
+<h2 id="one">1 · The one place you edit — the Settings block</h2>
+<p>Open <code>index.html</code> in any text editor (Notepad, VS Code, or even directly on GitHub). Near the very bottom, inside the <code>&lt;script&gt;</code>, you'll see this block. <b>This is the only thing you edit.</b> Paste your IDs between the quotes and save. Leave any value empty (<code>""</code>) to keep that tool off.</p>
+<pre><code>var ATC = {
+  supabaseUrl:  "https://jenpcqosofarxmthwouq.supabase.co",   // ✅ already set
+  supabaseKey:  "sb_publishable_...",                         // ✅ already set
+  calendly:     "",   // e.g. "https://calendly.com/yourname/30min"
+  metaPixelId:  "",   // e.g. "1234567890123456"
+  ga4Id:        "",   // e.g. "G-XXXXXXXXXX"
+  clarityId:    "",   // e.g. "abcd123xyz"
+  gtmId:        "",   // e.g. "GTM-XXXXXXX"
+  whatsapp:     "",   // e.g. "923001234567"  (country code, no + or spaces)
+  notifyEmail:  "hello@adsthatconvert.co",
+  web3formsKey: ""    // FREE instant email alert on every lead (web3forms.com)
+};</code></pre>
+<div class="note">That's the whole idea: no messy pasting of script tags in different places. You put the <b>ID</b> in here once, and the site loads the correct code automatically.</div>
+
+<h2 id="deploy">2 · Put the site live (your plan is correct 👍)</h2>
+<p>Your order — <b>Hostinger domain → GitHub → Vercel → connect repo → DNS records</b> — is exactly right. Here it is in detail:</p>
+<div class="step"><h3>Step 1 — Create a GitHub repo</h3>
+<ol>
+<li>Go to <a href="https://github.com">github.com</a> → sign up / log in.</li>
+<li>Click <b>New repository</b> → name it e.g. <code>atc-website</code> → Create.</li>
+<li>Click <b>uploading an existing file</b> and drag in <code>index.html</code> and the <code>assets</code> folder (or push with Git if you prefer). Commit.</li>
+</ol></div>
+<div class="step"><h3>Step 2 — Deploy on Vercel</h3>
+<ol>
+<li>Go to <a href="https://vercel.com">vercel.com</a> → <b>Sign up with GitHub</b>.</li>
+<li>Click <b>Add New → Project</b> → import your <code>atc-website</code> repo → <b>Deploy</b>.</li>
+<li>In ~20 seconds you get a live link like <code>atc-website.vercel.app</code>. Your site is online (with free SSL).</li>
+</ol></div>
+<div class="step"><h3>Step 3 — Connect your Hostinger domain</h3>
+<ol>
+<li>In Vercel: open your project → <b>Settings → Domains</b> → type your domain (e.g. <code>adsthatconvert.co</code>) → <b>Add</b>.</li>
+<li>Vercel shows you the DNS records to add. Usually:
+<pre><code>A     @      76.76.21.21
+CNAME www    cname.vercel-dns.com</code></pre>
+(Use the exact values Vercel shows you — they can change.)</li>
+<li>In Hostinger: <b>Domains → DNS / Nameservers → Manage DNS records</b>. Add the A record and the CNAME exactly as Vercel showed.</li>
+<li>Wait 10–60 minutes for DNS to update. Vercel will show ✅ Valid and auto-issue SSL. Done — your domain is live.</li>
+</ol></div>
+<div class="note">Every time you change the Settings block and push to GitHub, Vercel <b>redeploys automatically</b> in seconds. That's how you turn tools on/off later.</div>
+
+<h2 id="calendly">3 · Calendly booking</h2>
+<ol>
+<li>Sign up at <a href="https://calendly.com">calendly.com</a> → create an event type (e.g. <b>30-minute Strategy Call</b>).</li>
+<li>Copy your event link — it looks like <code>https://calendly.com/yourname/30min</code>.</li>
+<li>Paste it into the Settings block: <code>calendly: "https://calendly.com/yourname/30min"</code>.</li>
+</ol>
+<div class="ok">Now every <b>“Book a Call” / “Book a Strategy Call”</b> button on the site opens your Calendly in a nice popup — no page leave. If you leave it empty, those buttons just open the contact form instead.</div>
+
+<h2 id="pixel">4 · Meta (Facebook) Pixel — how the code goes in <span class="pill">most important for ads</span></h2>
+<p>You asked exactly how the pixel gets installed. Here's the full process:</p>
+<div class="step"><h3>Step 1 — Get your Pixel ID</h3>
+<ol>
+<li>Go to <a href="https://business.facebook.com/events_manager">Meta Events Manager</a>.</li>
+<li>Click <b>Connect data sources → Web → Meta Pixel → Connect</b>. Name it “ATC”.</li>
+<li>You'll get a <b>Pixel ID</b> — a long number like <code>1234567890123456</code>. Copy it.</li>
+</ol></div>
+<div class="step"><h3>Step 2 — Paste it (that's the “install”)</h3>
+<p>Put it in the Settings block: <code>metaPixelId: "1234567890123456"</code>, save, and push to GitHub. <b>Done.</b> You do <u>not</u> paste any pixel &lt;script&gt; code yourself — the site already contains the official pixel code, and it activates the moment it sees your ID.</p></div>
+<div class="step"><h3>What it tracks automatically</h3>
+<ul>
+<li><b>PageView</b> — fires on every page, so you can build audiences and run retargeting.</li>
+<li><b>Lead</b> — fires automatically the instant someone submits your contact form. This is the conversion event you optimize your ad campaigns for.</li>
+</ul></div>
+<div class="step"><h3>Step 3 — Verify it's working</h3>
+<ol>
+<li>Install the free <a href="https://chromewebstore.google.com/detail/meta-pixel-helper/fdgfkebogiimcoedlicjlajpkgnljlipd">Meta Pixel Helper</a> Chrome extension.</li>
+<li>Open your live site — the extension icon should show your pixel firing <b>PageView</b>.</li>
+<li>Submit a test form → it should show a <b>Lead</b> event. 🎉</li>
+</ol></div>
+<div class="note"><b>Next level (later):</b> Meta also offers the <b>Conversions API</b> for server-side tracking (more accurate, resists ad-blockers). We can add that once you're live and want to squeeze out more performance.</div>
+
+<h2 id="ga4">5 · Google Analytics 4</h2>
+<ol>
+<li>Go to <a href="https://analytics.google.com">analytics.google.com</a> → create an account + a <b>GA4 property</b> for your website.</li>
+<li>Under <b>Data streams → Web</b>, add your domain. You'll get a <b>Measurement ID</b> like <code>G-XXXXXXXXXX</code>.</li>
+<li>Paste it: <code>ga4Id: "G-XXXXXXXXXX"</code>. Save + push.</li>
+</ol>
+<div class="ok">Now you can see live visitors, traffic sources, top pages, and a <code>generate_lead</code> event every time a form is submitted.</div>
+
+<h2 id="clarity">6 · Microsoft Clarity (heatmaps + recordings) <span class="pill">free</span></h2>
+<ol>
+<li>Go to <a href="https://clarity.microsoft.com">clarity.microsoft.com</a> → sign in → <b>New project</b> → add your site.</li>
+<li>Copy the <b>Clarity project ID</b> (a short code like <code>abcd123xyz</code>).</li>
+<li>Paste it: <code>clarityId: "abcd123xyz"</code>. Save + push.</li>
+</ol>
+<p>You'll be able to <b>watch recordings</b> of real visitors and see <b>heatmaps</b> of where people click and how far they scroll — gold for improving conversions.</p>
+
+<h2 id="gtm">7 · Google Tag Manager (optional)</h2>
+<p>GTM is a “container” that lets you add/manage future tags without touching code. Optional — you can skip it since the Pixel + GA4 are already wired directly.</p>
+<ol>
+<li><a href="https://tagmanager.google.com">tagmanager.google.com</a> → create a container → copy the <code>GTM-XXXXXXX</code> ID.</li>
+<li>Paste it: <code>gtmId: "GTM-XXXXXXX"</code>.</li>
+</ol>
+
+<h2 id="whatsapp">8 · WhatsApp button</h2>
+<p>Add your number (country code, digits only): <code>whatsapp: "923001234567"</code>. A floating green WhatsApp button appears bottom-right; tapping it opens a chat with you. Leave empty to hide it.</p>
+
+<h2 id="leads">9 · Your leads — where they go &amp; email alerts</h2>
+<div class="ok"><b>Already working:</b> every form submission is saved to your Supabase project <b>“ads that convert leadflow-crm”</b>, in the table <code>website_leads</code>. Your existing data was not touched — this is a separate, clean table.</div>
+<h3>To view / export your leads</h3>
+<ol>
+<li>Go to <a href="https://supabase.com/dashboard">supabase.com/dashboard</a> → your project → <b>Table Editor</b> → <code>website_leads</code>.</li>
+<li>Each row = one lead (name, agency, email, niche, ad spend, message, the page they came from, and UTM campaign tags).</li>
+<li>Click <b>Export → CSV</b> anytime to download them for your CRM or Excel.</li>
+</ol>
+<h3>Get an instant email alert on every new lead <span class="pill">free · recommended</span></h3>
+<p>For low lead volume, the simplest <b>100% free</b> way is <b>Web3Forms</b> — unlimited submissions, no account, no server, no monthly limit. The site is already wired for it; you just add a key:</p>
+<ol>
+<li>Go to <a href="https://web3forms.com">web3forms.com</a> → enter your email → they instantly email you an <b>Access Key</b> (no signup, no password).</li>
+<li>Paste it into the Settings block: <code>web3formsKey: "your-access-key"</code>. Save + push.</li>
+</ol>
+<div class="ok">Done. Now every lead is <b>saved to Supabase</b> (your record) <b>and</b> instantly <b>emailed to you</b> — which also pops up as a phone notification if you use the Gmail / Mail app. Zero cost, no limits at your volume.</div>
+<h3>Want a WhatsApp ping too? (also free)</h3>
+<p>Optional: <a href="https://www.callmebot.com/blog/free-api-whatsapp-messages/">CallMeBot</a> gives a free personal WhatsApp API. It needs a tiny server step (a Supabase Edge Function) to keep your key private — I can set that up with you if you want lead alerts straight to WhatsApp. Otherwise, email is more than enough at low volume.</p>
+<h3>Later: push leads into GoHighLevel</h3>
+<p>When you're ready, a free <b>Zapier</b> plan (100 tasks/mo — plenty at low volume) can copy each Web3Forms/Supabase lead into your GoHighLevel pipeline automatically. Just ask and I'll walk you through it.</p>
+
+<h2 id="legal">10 · Privacy / Terms</h2>
+<p>The site includes <b>Privacy Policy</b> and <b>Terms</b> pages (linked in the footer). Meta <b>requires a privacy policy</b> before it fully approves your pixel/ad account, so these matter. They're written as solid templates — please read them once and adjust the details (company name, jurisdiction) to fit your business. For anything important, have a lawyer glance over them.</p>
+
+<h2 id="test">11 · Final test checklist</h2>
+<ul>
+<li>☐ Site opens on your real domain with the padlock (SSL).</li>
+<li>☐ Every page (Home, Services, Results, About, Contact) works.</li>
+<li>☐ “Book a Call” opens Calendly.</li>
+<li>☐ Submit a test lead → see the success message → see the row appear in Supabase <code>website_leads</code>.</li>
+<li>☐ Meta Pixel Helper shows <b>PageView</b> + a <b>Lead</b> on submit.</li>
+<li>☐ GA4 Realtime shows your visit.</li>
+<li>☐ WhatsApp button opens a chat.</li>
+<li>☐ Replace the placeholder stats / case studies / testimonials with your real numbers.</li>
+</ul>
+
+<hr>
+<p style="color:var(--dim);font-size:14px">Made for Ads That Convert. Edit the Settings block, push to GitHub, and Vercel redeploys automatically. Any step you want me to do <b>with</b> you — the Supabase email alerts, the Conversions API, or wiring GoHighLevel — just ask.</p>
+
+</div></body></html>
