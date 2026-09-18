@@ -1,0 +1,45 @@
+# robots.txt for Ads That Convert — https://www.adsthatconvert.agency/
+# White-label Facebook, Instagram & Meta ads agency for home improvement & home services agencies.
+
+# Allow all search engines to crawl the whole site
+User-agent: *
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# AI crawlers (so ChatGPT, Claude, Perplexity etc. can read and cite the site)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.adsthatconvert.agency/sitemap.xml
